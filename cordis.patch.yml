@@ -1,0 +1,9 @@
+# 本插件的 bundle 配置层：把 quiet-mode 这一行插入 profile 的插件行列表。
+#
+# package.json 的 dsh.bundle.patch 指向本文件，因此安装成 bundle 后，
+# 这一层会自动挂进 `dsh.profile.bundles` 配置栈（优先级低于 profile 自身的
+# cordis.patch.yml）。要改默认文本或临时关掉它，请覆盖 profile 里这一行的
+# config，而不是改本文件。
+- insert:
+    - id: quiet-mode
+      name: dsh-quiet-mode
