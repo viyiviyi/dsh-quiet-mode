@@ -45,7 +45,7 @@ console.log("A. 注册契约");
 
 check("默认配置注册唯一段落，order = 人设 + 1，文本逐字", () => {
   const ctx = fakeCtx();
-  plugin.apply(ctx, plugin.Config({}));
+  plugin.apply(ctx, {});
   assert.deepEqual(ctx.calls.orders, ["DEPLOYMENT_PERSONA"]);
   assert.deepEqual(ctx.calls.sections, [
     { name: "quiet-mode", order: 1, text: plugin.DEFAULT_TEXT },
@@ -53,10 +53,9 @@ check("默认配置注册唯一段落，order = 人设 + 1，文本逐字", () =
   assert.equal(ctx.calls.effects[0], "quiet-mode.section()");
 });
 
-check("Config() 会把缺省值补全", () => {
-  const cfg = plugin.Config({});
-  assert.equal(cfg.enabled, true);
-  assert.equal(cfg.text, plugin.DEFAULT_TEXT);
+check("默认值常量完整", () => {
+  assert.equal(plugin.DEFAULT_CONFIG.enabled, true);
+  assert.equal(plugin.DEFAULT_CONFIG.text, plugin.DEFAULT_TEXT);
 });
 
 check("段落名唯一，且与常量一致", () => {
@@ -67,23 +66,23 @@ check("段落名唯一，且与常量一致", () => {
 
 check("enabled: false 时什么都不注册", () => {
   const ctx = fakeCtx();
-  plugin.apply(ctx, plugin.Config({ enabled: false }));
+  plugin.apply(ctx, { enabled: false });
   assert.equal(ctx.calls.sections.length, 0);
 });
 
 check("text 为空白时什么都不注册", () => {
   const ctx = fakeCtx();
-  plugin.apply(ctx, plugin.Config({ text: "   \n " }));
+  plugin.apply(ctx, { text: "   \n " });
   assert.equal(ctx.calls.sections.length, 0);
 });
 
 check("自定义 text 生效", () => {
   const ctx = fakeCtx();
-  plugin.apply(ctx, plugin.Config({ text: "自定义纪律" }));
+  plugin.apply(ctx, { text: "自定义纪律" });
   assert.equal(ctx.calls.sections[0].text, "自定义纪律");
 });
 
-check("配置未经 schema 校验时按默认值兜底", () => {
+check("完全没给 config 时按默认值兜底", () => {
   const ctx = fakeCtx();
   plugin.apply(ctx, undefined);
   assert.equal(ctx.calls.sections[0].text, plugin.DEFAULT_TEXT);

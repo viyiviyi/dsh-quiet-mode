@@ -103,6 +103,17 @@ npm install <插件目录的绝对路径> --save
 
 ## 开发环境提示
 
+- `lib/index.js` 刻意**不 import 任何 `@deepseek-ai/*` 运行时包**。插件通常以 `link:` 指向克隆出来的
+  源码目录，Node 会从源码目录往上找 `node_modules`，而宿主作用域的包只在 profile 的
+  `node_modules` 里——解析不到就会让 `dsh` 在启动时直接失败：
+
+  ```
+  Cannot find package '@deepseek-ai/schemastery' imported from .../dsh-quiet-mode/lib/index.js
+  ```
+
+  所以配置项的默认值不放在 schemastery schema 里，而是由 `DEFAULT_CONFIG` + `apply()` 兜底。
+  插件因此是零运行时依赖的，克隆下来即可加载，不需要 `npm install`。
 - 包内的 `node_modules/@deepseek-ai` 是指向 `$DSH_HOME/profiles/node_modules/@deepseek-ai`
-  的 junction，只为让 `node verify.mjs` 能在工作区里解析 `@deepseek-ai/schemastery`；
+  的 junction，只为让 `node verify.mjs` 能在工作区里解析 `@deepseek-ai/cordis` 和
+  `@deepseek-ai/dsh-system-prompt`（这两个只出现在验证脚本里，宿主加载插件时用不到）；
   它已在 `.gitignore` 里，也不会进发布产物。
