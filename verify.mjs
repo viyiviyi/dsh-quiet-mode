@@ -46,7 +46,7 @@ console.log("A. 注册契约");
 check("默认配置注册唯一段落，order = 人设 + 1，文本逐字", () => {
   const ctx = fakeCtx();
   plugin.apply(ctx, {});
-  assert.deepEqual(ctx.calls.orders, ["DEPLOYMENT_PERSONA"]);
+  assert.deepEqual(ctx.calls.orders, ["DEPLOYMENT_PERSONA_PREFIX"]);
   assert.deepEqual(ctx.calls.sections, [
     { name: "quiet-mode", order: 1, text: plugin.DEFAULT_TEXT },
   ]);
@@ -92,7 +92,7 @@ console.log("B. 端到端：真实 cordis + dsh-system-prompt");
 
 const PERSONA_MARKER = "PERSONA-MARKER-FOR-ORDER-CHECK";
 const root = new Context();
-const personaRow = root.plugin(SystemPrompt, { persona: PERSONA_MARKER });
+const personaRow = root.plugin(SystemPrompt, { personaPrefix: PERSONA_MARKER });
 await new Promise((resolve) => setTimeout(resolve, 20));
 assert.ok(root.systemPrompt, "systemPrompt 服务未就绪");
 const quietRow = root.plugin(plugin);

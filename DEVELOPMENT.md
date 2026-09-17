@@ -17,7 +17,7 @@ dsh 的插件是一个 npm 包，通过 `package.json` 的 `dsh.bundle.patch` �
 在服务就绪后调用 `ctx.systemPrompt.section()` 注册一个提示词段落：
 
 - **段落名** `quiet-mode`（注册表要求唯一，重复注册会直接抛错）
-- **order** = `getSectionOrder('DEPLOYMENT_PERSONA') + 1`，即紧跟在部署人设之后，
+- **order** = `getSectionOrder('DEPLOYMENT_PERSONA_PREFIX') + 1`，即紧跟在部署人设之后，
   排在计划策略（500）和所有工具指引（1000 起）之前
 - **文本** 静态，随 agent 生命周期只注册一次
 
